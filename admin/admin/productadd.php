@@ -8,10 +8,11 @@ include "leftside.php";
 ?>
 <?php
 $product = new product();
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])){
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     // var_dump($_POST);
-	$insert_product = $product ->insert_product($_POST,$_FILES);
-    header('Location:brandlist.php');
+    $insert_product = $product->insert_product($_POST, $_FILES);
+    echo "<script>window.location.href = 'brandlist.php'';</script>";
+    exit();
 
 }
 
@@ -19,8 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])){
 <div class="admin-content-right">
     <div class="product-add-content">
         <?php
-                if(isset($insert_product)){echo $insert_product; }
-                ?>
+        if (isset($insert_product)) {
+            echo $insert_product;
+        }
+        ?>
         <form action="productadd.php" method="POST" enctype="multipart/form-data">
             <label for="">Tên sản phẩm<span style="color: red;">*</span></label> <br>
             <input required type="text" name="sanpham_tieude"> <br>
@@ -36,13 +39,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])){
             <select required="required" name="danhmuc_id" id="danhmuc_id">
                 <option value="">--Chọn--</option>
                 <?php
-                        $show_danhmuc = $product ->show_danhmuc();
-                        if($show_danhmuc){while($result=$show_danhmuc->fetch_assoc()){
+                $show_danhmuc = $product->show_danhmuc();
+                if ($show_danhmuc) {
+                    while ($result = $show_danhmuc->fetch(PDO::FETCH_ASSOC)) {
                         ?>
-                <option value="<?php echo $result['danhmuc_id'] ?>"><?php echo $result['danhmuc_ten'] ?></option>
-                <?php
-                        }}
-                        ?>
+                        <option value="<?php echo $result['danhmuc_id'] ?>"><?php echo $result['danhmuc_ten'] ?></option>
+                        <?php
+                    }
+                }
+                ?>
             </select>
             <label for="">Chọn Loại sản phẩm<span style="color: red;">*</span></label> <br>
             <select required="required" name="loaisanpham_id" id="loaisanpham_id">
@@ -53,13 +58,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])){
             <select required="required" name="color_id" id="">
                 <option value="">--Chọn--</option>
                 <?php
-                        $show_color = $product ->show_color();
-                        if($show_color){while($result=$show_color->fetch_assoc()){
+                $show_color = $product->show_color();
+                if ($show_color) {
+                    while ($result = $show_color->fetch(PDO::FETCH_ASSOC)) {
                         ?>
-                <option value="<?php echo $result['color_id'] ?>"><?php echo $result['color_ten'] ?></option>
-                <?php
-                        }}
-                        ?>
+                        <option value="<?php echo $result['color_id'] ?>"><?php echo $result['color_ten'] ?></option>
+                        <?php
+                    }
+                }
+                ?>
             </select>
             <label for="">Chọn Size sản phẩm<span style="color: red;">*</span></label> <br>
             <div class="sanpham-size">
@@ -89,31 +96,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])){
 <script src="js/script.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-//     $(".ckeditor").each(function(){
-//         CKEDITOR.replace( this.id, {
-// 	filebrowserBrowseUrl: '/ckfinder/ckfinder.html',
-// 	filebrowserUploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files'
-// } );
-//     })
-CKEDITOR.replace('ckeditor', {
-    filebrowserBrowseUrl: 'ckfinder/ckfinder.html',
-    filebrowserUploadUrl: 'ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files'
-});
+    //     $(".ckeditor").each(function(){
+    //         CKEDITOR.replace( this.id, {
+    // 	filebrowserBrowseUrl: '/ckfinder/ckfinder.html',
+    // 	filebrowserUploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files'
+    // } );
+    //     })
+    CKEDITOR.replace('ckeditor', {
+        filebrowserBrowseUrl: 'ckfinder/ckfinder.html',
+        filebrowserUploadUrl: 'ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files'
+    });
 </script>
 <script>
-$(document).ready(function() {
-    $("#danhmuc_id").change(function() {
-        // alert($(this).val())
-        var x = $(this).val()
-        console.log(x)
-        $.get("./ajax/productadd_ajax.php", {
-            danhmuc_id: x
-        }, function(data) {
-            $("#loaisanpham_id").html(data);
-        })
+    $(document).ready(function () {
+        $("#danhmuc_id").change(function () {
+            // alert($(this).val())
+            var x = $(this).val()
+            console.log(x)
+            $.get("./ajax/productadd_ajax.php", {
+                danhmuc_id: x
+            }, function (data) {
+                $("#loaisanpham_id").html(data);
+            })
 
+        })
     })
-})
 </script>
 </body>
 

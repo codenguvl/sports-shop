@@ -1,12 +1,12 @@
 <?php
 
-include("./config/config.php");
+include ("./config/config.php");
 
 class Database
 {
-    public $host   = DB_HOST;
-    public $user   = DB_USER;
-    public $pass   = DB_PASS;
+    public $host = DB_HOST;
+    public $user = DB_USER;
+    public $pass = DB_PASS;
     public $dbname = DB_NAME;
 
     public $link;
@@ -29,15 +29,26 @@ class Database
         }
     }
 
-    public function select($query)
+    public function select($query, $params = [])
     {
-        $stmt = $this->link->query($query);
-        if ($stmt) {
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } else {
+        try {
+            $stmt = $this->link->prepare($query);
+            $stmt->execute($params);
+            return $stmt;
+        } catch (PDOException $e) {
+            $this->error = "Query failed: " . $e->getMessage();
             return false;
         }
     }
+
+
+    public function login($query)
+    {
+        $result = $this->mysqli->query($query);
+        return $result;
+    }
+
+
 
     public function selectdc($query)
     {
@@ -58,5 +69,21 @@ class Database
     public function delete($query)
     {
         return $this->insert($query); // Sử dụng lại phương thức insert
+    }
+
+    public function prepare($query)
+    {
+        return $this->link->prepare($query);
+    }
+
+    public function execute($stmt, $params)
+    {
+        try {
+            $stmt->execute($params);
+            return $stmt;
+        } catch (PDOException $e) {
+            $this->error = "Execution failed: " . $e->getMessage();
+            return false;
+        }
     }
 }

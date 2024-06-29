@@ -1543,3 +1543,9 @@ h5 {
   font-weight: 700 !important;
   font-size: 40px !important;
 }
+.cartegory-right {
+  padding-bottom: 50px;
+}
+.card-body a {
+  text-decoration: none;
+}

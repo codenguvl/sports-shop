@@ -1,22 +1,17 @@
 <?php
-define('__ROOT__', dirname(dirname(__FILE__))); 
-include('./lib/session.php');
-include('./lib/database.php');
-include('./helper/format.php');
-include('./class/cartegory_class.php');
-include('./class/brand_class.php');
-include('./class/comment_class.php');
-include('./class/product_class.php');
-/* require_once(__ROOT__.'./lib/session.php');
-require_once(__ROOT__.'/admin/lib/database.php');
-require_once(__ROOT__.'/helper/format.php');
-require_once(__ROOT__.'../admin/class/cartegory_class.php');
-require_once(__ROOT__.'../admin/class/brand_class.php');
-require_once(__ROOT__.'../admin/class/comment_class.php');
-require_once(__ROOT__.'../admin/class/product_class.php'); */
+ob_start();
+define('__ROOT__', dirname(dirname(__FILE__)));
+include ('./lib/session.php');
+include ('./lib/database.php');
+include ('./helper/format.php');
+include ('./class/cartegory_class.php');
+include ('./class/brand_class.php');
+include ('./class/comment_class.php');
+include ('./class/product_class.php');
+
 Session::init();
 Session::checkSession()
-?>
+    ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,6 +25,7 @@ Session::checkSession()
     <script src="ckeditor/ckeditor.js"></script>
     <script src="ckfinder/ckfinder.js"></script>
     <title>Admin-HONGPHUCSPORT</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>

@@ -13,5 +13,6 @@ if (!isset($_GET['question_id'])|| $_GET['question_id']==NULL){
 else {$question_id = $_GET['question_id'];
     }
     $delete_question = $comment  -> delete_question($question_id);
-    header('Location:questionlist.php');
+echo "<script>window.location.href = 'questionlist.php'';</script>";
+exit();
 ?>

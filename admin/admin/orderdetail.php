@@ -29,7 +29,7 @@ if (isset($_GET['order_ma'])|| $_GET['order_ma']!=NULL){
             <?php
                      $TT = 0;
                $show_order_detail = $product  -> show_order_detail($order_ma);
-               if($show_order_detail){$i=0;while($result = $show_order_detail->fetch_assoc()){$i++;
+               if($show_order_detail){$i=0;while($result = $show_order_detail->fetch(PDO::FETCH_ASSOC)){$i++;
                 ?>
             <tr>
                 <td> <?php echo $i ?></td>

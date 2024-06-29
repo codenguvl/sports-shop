@@ -2,7 +2,6 @@
 @ob_start();
 session_start();
 $session_id = session_id();
-
 ?>
 
 <?php
@@ -38,7 +37,6 @@ if (isset($_GET['search'])) {
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,7 +57,7 @@ if (isset($_GET['search'])) {
 </head>
 
 <body>
-    <secsion class="top">
+    <section class="top">
         <div class="container">
             <div class="row">
                 <div class="menu-bar">
@@ -77,28 +75,29 @@ if (isset($_GET['search'])) {
                                 $danhmuc_id = $result['danhmuc_id'];
                                 $show_loaisanpham = $index->show_loaisanpham($danhmuc_id);
 
-                                if (!$show_loaisanpham || count($show_loaisanpham) == 0) {
+                                if ($danhmuc_id == 1 || $danhmuc_id == 2 || $danhmuc_id == 3) {
+                                    if (!$show_loaisanpham || empty($show_loaisanpham)) {
+                                        $danhmuc_ten = $result['danhmuc_ten'];
+                                        echo '<li><a href="danhmuc.php?id=' . $danhmuc_id . '">' . $danhmuc_ten . '</a></li>';
+                                    } else {
+                                        echo '<li>' . $result['danhmuc_ten'] . '
+                                             <ul class="top-menu-item">';
+                                        foreach ($show_loaisanpham as $row) {
+                                            echo '<li><a href="cartegory.php?loaisanpham_id=' . $row['loaisanpham_id'] . '">' . $row['loaisanpham_ten'] . '</a></li>';
+                                        }
+                                        echo '</ul><i class="fas fa-chevron-down"></i></li>';
+                                    }
+                                } else {
                                     $danhmuc_ten = $result['danhmuc_ten'];
-
                                     $danhmuc_ten_formatted = mb_strtolower($danhmuc_ten, 'UTF-8');
                                     $danhmuc_ten_formatted = preg_replace('/\s+/u', '-', $danhmuc_ten_formatted);
-
                                     $danhmuc_ten_formatted = preg_replace('/(\p{M})/u', '', $danhmuc_ten_formatted);
-
                                     echo '<li><a href="' . $danhmuc_ten_formatted . '.php">' . $danhmuc_ten . '</a></li>';
-                                } else {
-                                    echo '<li>' . $result['danhmuc_ten'] . '
-                 <ul class="top-menu-item">';
-                                    foreach ($show_loaisanpham as $row) {
-                                        echo '<li><a href="cartegory.php?loaisanpham_id=' . $row['loaisanpham_id'] . '">' . $row['loaisanpham_ten'] . '</a></li>';
-                                    }
-                                    echo '</ul><i class="fas fa-chevron-down"></i></li>';
                                 }
                             }
                         }
                         ?>
                     </ul>
-
                 </div>
                 <div class="top-menu-icons">
                     <ul>
@@ -117,7 +116,7 @@ if (isset($_GET['search'])) {
                             } ?></span></a>
                             <div class="cart-content-mini">
                                 <div class="cart-content-mini-top">
-                                    <P>Giỏ hàng</P>
+                                    <p>Giỏ hàng</p>
                                 </div>
                                 <?php
                                 $session_id = session_id();
@@ -127,30 +126,26 @@ if (isset($_GET['search'])) {
                                 if ($show_cartF instanceof PDOStatement) {
                                     while ($result = $show_cartF->fetch(PDO::FETCH_ASSOC)) {
                                         ?>
-                                <div class="cart-content-mini-item">
-                                    <img style="width:50px" src="<?php echo $result['sanpham_anh'] ?>" alt="">
-                                    <div class="cart-content-item-text">
-                                        <h1><?php echo $result['sanpham_tieude'] ?></h1>
-                                        <p>Màu: </p>
-                                        <p>Size: <?php echo $result['sanpham_size'] ?></p>
-                                        <p>SL: <?php echo $result['quantitys'] ?></p>
-                                    </div>
-                                </div>
-                                <?php
+                                        <div class="cart-content-mini-item">
+                                            <img style="width:50px" src="<?php echo $result['sanpham_anh'] ?>" alt="">
+                                            <div class="cart-content-item-text">
+                                                <h1><?php echo $result['sanpham_tieude'] ?></h1>
+                                                <p>Màu: </p>
+                                                <p>Size: <?php echo $result['sanpham_size'] ?></p>
+                                                <p>SL: <?php echo $result['quantitys'] ?></p>
+                                            </div>
+                                        </div>
+                                        <?php
                                     }
                                 }
                                 ?>
-
-
-
                                 <div class="cart-content-mini-bottom">
                                     <p><a href="cart.php">...Xem chi tiết</a></p>
                                 </div>
                             </div>
                         </li>
                     </ul>
-
                 </div>
             </div>
         </div>
-    </secsion>
+    </section>

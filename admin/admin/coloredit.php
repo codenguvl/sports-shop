@@ -11,7 +11,7 @@ if (isset($_GET['color_id'])|| $_GET['color_id']!=NULL){
     $color_id = $_GET['color_id'];
     }
     $get_color = $brand -> get_color($color_id);
-    if($get_color){$resul = $get_color ->fetch_assoc();}
+    if($get_color){$resul = $get_color ->fetch(PDO::FETCH_ASSOC);}
 
 ?>
 <?php
@@ -28,21 +28,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 }
 ?>
-        <div class="admin-content-right">
-            <div class="subcartegory-add-content">
-                <form action="" method="POST" enctype="multipart/form-data">
-                    <label for="">Tên màu sắc<span style="color: red;">*</span></label> <br>
-                    <input value="<?php echo $resul['color_ten'] ?>" class="subcartegory-input" type="text" name="color_ten"> <br>
-                    <label for="">Ảnh đại diện<span style="color: red;">*</span></label> <br>
-                    <img style="width: 100px; height: 100px" src="uploads/<?php echo $resul['color_anh'] ?>" alt="">
-                    <input required type="file" name="color_anh"> <br>   
-                    <button class="admin-btn" type="submit">Gửi</button>             
-                </form>
-            </div>           
-        </div>
-    </section>
-    <section>
-    </section>
-    <script src="js/script.js"></script>
+<div class="admin-content-right">
+    <div class="subcartegory-add-content">
+        <form action="" method="POST" enctype="multipart/form-data">
+            <label for="">Tên màu sắc<span style="color: red;">*</span></label> <br>
+            <input value="<?php echo $resul['color_ten'] ?>" class="subcartegory-input" type="text" name="color_ten">
+            <br>
+            <label for="">Ảnh đại diện<span style="color: red;">*</span></label> <br>
+            <img style="width: 100px; height: 100px" src="uploads/<?php echo $resul['color_anh'] ?>" alt="">
+            <input required type="file" name="color_anh"> <br>
+            <button class="admin-btn" type="submit">Gửi</button>
+        </form>
+    </div>
+</div>
+</section>
+<section>
+</section>
+<script src="js/script.js"></script>
 </body>
-</html>  
+
+</html>

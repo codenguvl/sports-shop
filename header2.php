@@ -2,7 +2,6 @@
 @ob_start();
 session_start();
 $session_id = session_id();
-
 ?>
 
 <?php
@@ -17,7 +16,10 @@ $index = new index;
 <?php
 if (isset($_GET['search'])) {
     $searchTerm = $_GET['search'];
-    $connection = mysqli_connect("localhost", "root", "12345678", "website_bandothethao");
+    $connection = new mysqli("localhost", "root", "12345678", "website_bandothethao");
+    if ($connection->connect_error) {
+        die("Connection failed: " . $connection->connect_error);
+    }
     $stmt = $connection->prepare("SELECT loaisanpham_id FROM tbl_sanpham WHERE sanpham_tieude LIKE ?");
     $searchTerm = '%' . $searchTerm . '%';
     $stmt->bind_param("s", $searchTerm);
@@ -31,6 +33,8 @@ if (isset($_GET['search'])) {
         header("Location: cartegory.php?loaisanpham_id=0");
         exit();
     }
+    $stmt->close();
+    $connection->close();
 }
 ?>
 
@@ -38,7 +42,6 @@ if (isset($_GET['search'])) {
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,9 +52,6 @@ if (isset($_GET['search'])) {
     <link rel="stylesheet" href="css/mainstyle.css">
     <title>Trang chủ | HongPhucSport</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
@@ -59,7 +59,7 @@ if (isset($_GET['search'])) {
 </head>
 
 <body>
-    <secsion class="top">
+    <section class="top">
         <div class="container">
             <div class="row">
                 <div class="menu-bar">
@@ -77,28 +77,29 @@ if (isset($_GET['search'])) {
                                 $danhmuc_id = $result['danhmuc_id'];
                                 $show_loaisanpham = $index->show_loaisanpham($danhmuc_id);
 
-                                if (!$show_loaisanpham || count($show_loaisanpham) == 0) {
+                                if ($danhmuc_id == 1 || $danhmuc_id == 2 || $danhmuc_id == 3) {
+                                    if (!$show_loaisanpham || empty($show_loaisanpham)) {
+                                        $danhmuc_ten = $result['danhmuc_ten'];
+                                        echo '<li><a href="danhmuc.php?id=' . $danhmuc_id . '">' . $danhmuc_ten . '</a></li>';
+                                    } else {
+                                        echo '<li>' . $result['danhmuc_ten'] . '
+                                             <ul class="top-menu-item">';
+                                        foreach ($show_loaisanpham as $row) {
+                                            echo '<li><a href="cartegory.php?loaisanpham_id=' . $row['loaisanpham_id'] . '">' . $row['loaisanpham_ten'] . '</a></li>';
+                                        }
+                                        echo '</ul><i class="fas fa-chevron-down"></i></li>';
+                                    }
+                                } else {
                                     $danhmuc_ten = $result['danhmuc_ten'];
-
                                     $danhmuc_ten_formatted = mb_strtolower($danhmuc_ten, 'UTF-8');
                                     $danhmuc_ten_formatted = preg_replace('/\s+/u', '-', $danhmuc_ten_formatted);
-
                                     $danhmuc_ten_formatted = preg_replace('/(\p{M})/u', '', $danhmuc_ten_formatted);
-
                                     echo '<li><a href="' . $danhmuc_ten_formatted . '.php">' . $danhmuc_ten . '</a></li>';
-                                } else {
-                                    echo '<li>' . $result['danhmuc_ten'] . '
-                 <ul class="top-menu-item">';
-                                    foreach ($show_loaisanpham as $row) {
-                                        echo '<li><a href="cartegory.php?loaisanpham_id=' . $row['loaisanpham_id'] . '">' . $row['loaisanpham_ten'] . '</a></li>';
-                                    }
-                                    echo '</ul><i class="fas fa-chevron-down"></i></li>';
                                 }
                             }
                         }
                         ?>
                     </ul>
-
                 </div>
                 <div class="top-menu-icons">
                     <ul>
@@ -117,7 +118,7 @@ if (isset($_GET['search'])) {
                             } ?></span></a>
                             <div class="cart-content-mini">
                                 <div class="cart-content-mini-top">
-                                    <P>Giỏ hàng</P>
+                                    <p>Giỏ hàng</p>
                                 </div>
                                 <?php
                                 $session_id = session_id();
@@ -140,17 +141,13 @@ if (isset($_GET['search'])) {
                                     }
                                 }
                                 ?>
-
-
-
                                 <div class="cart-content-mini-bottom">
                                     <p><a href="cart.php">...Xem chi tiết</a></p>
                                 </div>
                             </div>
                         </li>
                     </ul>
-
                 </div>
             </div>
         </div>
-    </secsion>
+    </section>

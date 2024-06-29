@@ -33,7 +33,7 @@ $fm = new Format();
             </tr>
             <?php
                   $show_product = $product ->show_product();
-                  if($show_product){$i=0; while($result = $show_product ->fetch_assoc()){$i++;
+                  if($show_product){$i=0; while($result = $show_product ->fetch(PDO::FETCH_ASSOC)){$i++;
 
                  
                   ?>

@@ -20,30 +20,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 }
 ?>
-        <div class="admin-content-right">
-            <div class="subcartegory-add-content">
-                <form action="" method="POST" enctype="multipart/form-data">
-                    <label for="">Chọn mã sản phẩm<span style="color: red;">*</span></label> <br>
-                    <select required="required" name="sanpham_id">
-                        <option value="">--Chọn--</option>
-                        <?php
+<div class="admin-content-right">
+    <div class="subcartegory-add-content">
+        <form action="" method="POST" enctype="multipart/form-data">
+            <label for="">Chọn mã sản phẩm<span style="color: red;">*</span></label> <br>
+            <select required="required" name="sanpham_id">
+                <option value="">--Chọn--</option>
+                <?php
                         $show_product = $product ->show_product();
-                        if($show_product){while($result=$show_product->fetch_assoc()){
+                        if($show_product){while($result=$show_product->fetch(PDO::FETCH_ASSOC)){
                         ?>
-                        <option value="<?php echo $result['sanpham_id'] ?>"><?php echo $result['sanpham_ma'] ?></option>
-                        <?php
+                <option value="<?php echo $result['sanpham_id'] ?>"><?php echo $result['sanpham_ma'] ?></option>
+                <?php
                         }}
                         ?>
-                    </select> <br>
-                    <label for="">Ảnh Sản phẩm<span style="color: red;">*</span></label> <br>
-                    <input required type="file" name="sanpham_anh"> <br>   
-                    <button class="admin-btn" type="submit">Gửi</button>             
-                </form>
-            </div>           
-        </div>
-    </section>
-    <section>
-    </section>
-    <script src="js/script.js"></script>
+            </select> <br>
+            <label for="">Ảnh Sản phẩm<span style="color: red;">*</span></label> <br>
+            <input required type="file" name="sanpham_anh"> <br>
+            <button class="admin-btn" type="submit">Gửi</button>
+        </form>
+    </div>
+</div>
+</section>
+<section>
+</section>
+<script src="js/script.js"></script>
 </body>
-</html>  
+
+</html>

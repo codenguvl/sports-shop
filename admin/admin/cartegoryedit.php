@@ -7,31 +7,34 @@ include "leftside.php";
 ?>
 <?php
 $cartegory = new cartegoty();
-if (isset($_GET['danhmuc_id'])|| $_GET['danhmuc_id']!=NULL){
+if (isset($_GET['danhmuc_id']) || $_GET['danhmuc_id'] != NULL) {
     $danhmuc_id = $_GET['danhmuc_id'];
-    }
-    $get_cartegory = $cartegory -> get_cartegory($danhmuc_id);
-    if($get_cartegory){$resul = $get_cartegory ->fetch_assoc();}
+}
+$get_cartegory = $cartegory->get_cartegory($danhmuc_id);
+if ($get_cartegory) {
+    $resul = $get_cartegory->fetch(PDO::FETCH_ASSOC);
+}
 ?>
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $danhmuc_ten = $_POST['danhmuc_ten'];
-	$update_cartegory = $cartegory->update_cartegory($danhmuc_ten,$danhmuc_id);
+    $update_cartegory = $cartegory->update_cartegory($danhmuc_ten, $danhmuc_id);
 
 }
 ?>
-        <div class="admin-content-right">
-            <div class="cartegory-add-content">
-                <form action="" method="POST" enctype="multipart/form-data">
-                    <label for="">Vùi lòng danh mục<span style="color: red;">*</span></label> <br>
-                    <input type="text" name="danhmuc_ten" value="<?php echo $resul['danhmuc_ten'] ?>">
-                    <button class="admin-btn" type="submit">Sửa</button>             
-                </form>
-            </div>           
-        </div>
-    </section>
-    <section>
-    </section>
-    <script src="js/script.js"></script>
+<div class="admin-content-right">
+    <div class="cartegory-add-content">
+        <form action="" method="POST" enctype="multipart/form-data">
+            <label for="">Vùi lòng danh mục<span style="color: red;">*</span></label> <br>
+            <input type="text" name="danhmuc_ten" value="<?php echo $resul['danhmuc_ten'] ?>">
+            <button class="admin-btn" type="submit">Sửa</button>
+        </form>
+    </div>
+</div>
+</section>
+<section>
+</section>
+<script src="js/script.js"></script>
 </body>
-</html>  
+
+</html>

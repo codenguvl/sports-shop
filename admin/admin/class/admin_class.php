@@ -12,33 +12,38 @@ include ("./lib/session.php");
 class admin
 {
 
-   private $db;
+    private $db;
 
-public function __construct()
-   {
-       $this ->db = new Database();
-    
-   }
-public function check_admin($username,$userpassword){
-    $query = "SELECT * FROM tbl_admin  WHERE admin_name = '$username' AND admin_password = '$userpassword' LIMIT 1 ";
-    $result = $this -> db ->select($query);
-    if($result!=false) {
-        $value = $result ->fetch_assoc();
-        Session::set('user_login',true);
-        Session::set('admin_name',$value['admin_name']);
-        Session::set('admin_id',$value['admin_id']);
-        // echo Session::get('admin_name');
-        header('Location:index.php');
-    }
-    else {
-        /* $alert = "Tên đăng nhập hoặc mật khẩu không đúng"; */
-        $alert = $userpassword;
-        return $alert;
-    }
-    // return $result;
-}
+    public function __construct()
+    {
+        $this->db = new Database();
 
-// public function show_member(){
+    }
+    public function check_admin($username, $userpassword)
+    {
+        $query = "SELECT * FROM tbl_admin WHERE admin_name = ? AND admin_password = ? LIMIT 1";
+        $stmt = $this->db->prepare($query);
+        $params = [$username, $userpassword];
+
+        $result = $this->db->execute($stmt, $params);
+
+        if ($result && $result->rowCount() > 0) {
+            $value = $result->fetch(PDO::FETCH_ASSOC);
+            Session::set('user_login', true);
+            Session::set('admin_name', $value['admin_name']);
+            Session::set('admin_id', $value['admin_id']);
+
+            header('Location:index.php');
+        } else {
+            $alert = "Tên đăng nhập hoặc mật khẩu không đúng";
+            return $alert;
+        }
+    }
+
+
+
+
+    // public function show_member(){
 //     $query = "SELECT * FROM tbl_user ORDER BY userA_id DESC";
 //     $result = $this -> db ->select($query);
 //     return $result;
@@ -49,34 +54,34 @@ public function check_admin($username,$userpassword){
 //     return $result;
 //     // if($result) {$alert = "<span class = 'alert-style'> Delete Thành công</span> "; return $alert;}
 //     // else {$alert = "<span class = 'alert-style'> Delete Thất bại</span>"; return $alert;}
-  
 
 
-// }
-   
-// public function insert_member($user_ten,$user_password){
+
+    // }
+
+    // public function insert_member($user_ten,$user_password){
 //             $query = "INSERT INTO tbl_user (user_ten,user_password) VALUES ('$user_ten','$user_password')";
 //             $result = $this ->db ->insert($query);
 //             header('Location:memberlist.php');
 //             return $result;
-           
-          
-//         }
-    
-//     public function delete_member($userA_id){
+
+
+    //         }
+
+    //     public function delete_member($userA_id){
 //             $query = "DELETE  FROM tbl_user WHERE userA_id = '$userA_id'";
 //             $result = $this -> db ->delete($query);
 //             return $result;
 //             // if($result) {$alert = "<span class = 'alert-style'> Delete Thành công</span> "; return $alert;}
 //             // else {$alert = "<span class = 'alert-style'> Delete Thất bại</span>"; return $alert;}
-          
-        
-        
-//         }
 
 
-       
-   }
+
+    //         }
+
+
+
+}
 
 
 ?>

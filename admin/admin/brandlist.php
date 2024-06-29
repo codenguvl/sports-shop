@@ -7,38 +7,40 @@ include "leftside.php";
 $brand = new brand;
 $show_brand = $brand -> show_brand()
 ?>
-       <div class="admin-content-right">
-            <div class="table-content">
-                <table>
-                    <tr>
-                        <th>Stt</th>
-                        <th>ID</th>
-                        <th>Danh mục</th>
-                        <th>Loại sản phẩm</th>
-                        <th>Tùy chỉnh</th>
-                    </tr>
-                    <?php
-                    if($show_brand){$i=0; while($result= $show_brand->fetch_assoc()){
+<div class="admin-content-right">
+    <div class="table-content">
+        <table>
+            <tr>
+                <th>Stt</th>
+                <th>ID</th>
+                <th>Danh mục</th>
+                <th>Loại sản phẩm</th>
+                <th>Tùy chỉnh</th>
+            </tr>
+            <?php
+                    if($show_brand){$i=0; while($result= $show_brand->fetch(PDO::FETCH_ASSOC)){
                         $i++
                    
                     ?>
-                    <tr>
-                        <td> <?php echo $i ?></td>
-                        <td> <?php echo $result['loaisanpham_id'] ?></td>
-                        <td> <?php echo $result['danhmuc_ten']  ?></td>
-                        <td> <?php echo $result['loaisanpham_ten'] ?></td>
-                        <td><a href="brandedit.php?loaisanpham_id=<?php echo $result['loaisanpham_id'] ?>">Sửa</a>|<a href="branddelete.php?loaisanpham_id=<?php echo $result['loaisanpham_id'] ?>">Xóa</a></td>
-                    </tr>
-                    <?php
+            <tr>
+                <td> <?php echo $i ?></td>
+                <td> <?php echo $result['loaisanpham_id'] ?></td>
+                <td> <?php echo $result['danhmuc_ten']  ?></td>
+                <td> <?php echo $result['loaisanpham_ten'] ?></td>
+                <td><a href="brandedit.php?loaisanpham_id=<?php echo $result['loaisanpham_id'] ?>">Sửa</a>|<a
+                        href="branddelete.php?loaisanpham_id=<?php echo $result['loaisanpham_id'] ?>">Xóa</a></td>
+            </tr>
+            <?php
                      }}
                     ?>
-                   
-                </table>
-               </div>        
-        </div>
-    </section>
-    <section>
-    </section>
-    <script src="js/script.js"></script>
+
+        </table>
+    </div>
+</div>
+</section>
+<section>
+</section>
+<script src="js/script.js"></script>
 </body>
-</html>  
+
+</html>

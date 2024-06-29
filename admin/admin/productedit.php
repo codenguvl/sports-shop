@@ -8,24 +8,30 @@ include "leftside.php";
 ?>
 <?php
 $product = new product();
-if (isset($_GET['sanpham_id'])|| $_GET['sanpham_id']!=NULL){
+if (isset($_GET['sanpham_id']) || $_GET['sanpham_id'] != NULL) {
     $sanpham_id = $_GET['sanpham_id'];
-    }
-    $get_sanpham = $product -> get_sanpham($sanpham_id);
-    if($get_sanpham){$resul = $get_sanpham ->fetch_assoc();}
-  
+}
+$get_sanpham = $product->get_sanpham($sanpham_id);
+if ($get_sanpham) {
+    $resul = $get_sanpham->fetch(PDO::FETCH_ASSOC);
+}
+
 ?>
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])){
-	$update_product = $product ->update_product($_POST,$_FILES,$sanpham_id );
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
+    $update_product = $product->update_product($_POST, $_FILES, $sanpham_id);
     // header('Location:brandlist.php');
+    echo "<script>window.location.href = 'brandlist.php'';</script>";
+    exit();
 }
 ?>
 <div class="admin-content-right">
     <div class="product-add-content">
         <?php
-                if(isset($insert_product)){echo $insert_product; }
-                ?>
+        if (isset($insert_product)) {
+            echo $insert_product;
+        }
+        ?>
         <form action="" method="POST" enctype="multipart/form-data">
             <label for="">Tên sản phẩm<span style="color: red;">*</span></label> <br>
             <input value="<?php echo $resul['sanpham_tieude'] ?>" required type="text" name="sanpham_tieude"> <br>
@@ -41,41 +47,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])){
             <select required="required" name="danhmuc_id" id="danhmuc_id">
                 <option value="">--Chọn--</option>
                 <?php
-                        $show_danhmuc = $product ->show_danhmuc();
-                        if($show_danhmuc){while($result=$show_danhmuc->fetch_assoc()){
+                $show_danhmuc = $product->show_danhmuc();
+                if ($show_danhmuc) {
+                    while ($result = $show_danhmuc->fetch(PDO::FETCH_ASSOC)) {
                         ?>
-                <option <?php if($resul['danhmuc_id']== $result['danhmuc_id']) {echo "selected";} ?>
-                    value="<?php echo $result['danhmuc_id'] ?>"><?php echo $result['danhmuc_ten'] ?></option>
-                <?php
-                        }}
-                        ?>
+                        <option <?php if ($resul['danhmuc_id'] == $result['danhmuc_id']) {
+                            echo "selected";
+                        } ?> value="<?php echo $result['danhmuc_id'] ?>"><?php echo $result['danhmuc_ten'] ?></option>
+                        <?php
+                    }
+                }
+                ?>
             </select>
             <label for="">Chọn Loại sản phẩm<span style="color: red;">*</span></label> <br>
             <select required="required" name="loaisanpham_id" id="loaisanpham_id">
                 <option value="">--Chọn--</option>
                 <?php
-                        $show_loaisanpham = $product ->show_loaisanpham();
-                        if($show_loaisanpham){while($result=$show_loaisanpham->fetch_assoc()){
+                $show_loaisanpham = $product->show_loaisanpham();
+                if ($show_loaisanpham) {
+                    while ($result = $show_loaisanpham->fetch(PDO::FETCH_ASSOC)) {
                         ?>
-                <option <?php if($resul['loaisanpham_id']== $result['loaisanpham_id']) {echo "selected";} ?>
-                    value="<?php echo $result['loaisanpham_id'] ?>"><?php echo $result['loaisanpham_ten'] ?></option>
-                <?php
-                        }}
-                        ?>
+                        <option <?php if ($resul['loaisanpham_id'] == $result['loaisanpham_id']) {
+                            echo "selected";
+                        } ?> value="<?php echo $result['loaisanpham_id'] ?>"><?php echo $result['loaisanpham_ten'] ?>
+                        </option>
+                        <?php
+                    }
+                }
+                ?>
 
             </select>
             <label for="">Chọn Màu sản phẩm<span style="color: red;">*</span></label> <br>
             <select required="required" name="color_id" id="">
                 <option value="">--Chọn--</option>
                 <?php
-                        $show_color = $product ->show_color();
-                        if($show_color){while($result=$show_color->fetch_assoc()){
+                $show_color = $product->show_color();
+                if ($show_color) {
+                    while ($result = $show_color->fetch(PDO::FETCH_ASSOC)) {
                         ?>
-                <option <?php if($resul['color_id']== $result['color_id']) {echo "selected";} ?>
-                    value="<?php echo $result['color_id'] ?>"><?php echo $result['color_ten'] ?></option>
-                <?php
-                        }}
-                        ?>
+                        <option <?php if ($resul['color_id'] == $result['color_id']) {
+                            echo "selected";
+                        } ?> value="<?php echo $result['color_id'] ?>"><?php echo $result['color_ten'] ?></option>
+                        <?php
+                    }
+                }
+                ?>
             </select>
             <label for="">Giá sản phẩm<span style="color: red;">*</span></label> <br>
             <input value="<?php echo $resul['sanpham_gia'] ?>" required type="text" name="sanpham_gia"> <br>
@@ -91,13 +107,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])){
             <label for="">Ảnh Sản phẩm<span style="color: red;">*</span></label> <br>
             <div class="sanpham-anh">
                 <?php
-                          $get_anh = $product -> get_anh($sanpham_id);                        
-                          if($get_anh){while($resultA=$get_anh->fetch_assoc()){
+                $get_anh = $product->get_anh($sanpham_id);
+                if ($get_anh) {
+                    while ($resultA = $get_anh->fetch(PDO::FETCH_ASSOC)) {
                         ?>
-                <img style="width: 100px; height: 100px" src="uploads/<?php echo $resultA['sanpham_anh'] ?>">
-                <?php
-                        }}
-                        ?>
+                        <img style="width: 100px; height: 100px" src="uploads/<?php echo $resultA['sanpham_anh'] ?>">
+                        <?php
+                    }
+                }
+                ?>
             </div>
             <input type="file" multiple name="sanpham_anhs[]"> <br>
             <button class="admin-btn" name="submit" type="submit">Gửi</button>
@@ -110,30 +128,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])){
 <script src="js/script.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-//     $(".ckeditor").each(function(){
-//         CKEDITOR.replace( this.id, {
-// 	filebrowserBrowseUrl: '/ckfinder/ckfinder.html',
-// 	filebrowserUploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files'
-// } );
-//     })
-CKEDITOR.replace('ckeditor', {
-    filebrowserBrowseUrl: 'ckfinder/ckfinder.html',
-    filebrowserUploadUrl: 'ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files'
-});
+    //     $(".ckeditor").each(function(){
+    //         CKEDITOR.replace( this.id, {
+    // 	filebrowserBrowseUrl: '/ckfinder/ckfinder.html',
+    // 	filebrowserUploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files'
+    // } );
+    //     })
+    CKEDITOR.replace('ckeditor', {
+        filebrowserBrowseUrl: 'ckfinder/ckfinder.html',
+        filebrowserUploadUrl: 'ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files'
+    });
 </script>
 <script>
-$(document).ready(function() {
-    $("#danhmuc_id").change(function() {
-        // alert($(this).val())
-        var x = $(this).val()
-        $.get("ajax/productadd_ajax.php", {
-            danhmuc_id: x
-        }, function(data) {
-            $("#loaisanpham_id").html(data);
-        })
+    $(document).ready(function () {
+        $("#danhmuc_id").change(function () {
+            // alert($(this).val())
+            var x = $(this).val()
+            $.get("ajax/productadd_ajax.php", {
+                danhmuc_id: x
+            }, function (data) {
+                $("#loaisanpham_id").html(data);
+            })
 
+        })
     })
-})
 </script>
 </body>
 
