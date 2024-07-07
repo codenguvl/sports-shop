@@ -1,8 +1,8 @@
 <?php
 define('__ROOT__', dirname(dirname(__FILE__)));
-include("./admin/admin/lib/database.php");
-include("./admin/admin/lib/session.php");
-include("./admin/admin/lib/format.php");
+include ("./admin/admin/lib/database.php");
+include ("./admin/admin/lib/session.php");
+include ("./admin/admin/lib/format.php");
 /* require_once(__ROOT__.'\admin/admin/lib/database.php'); 
  require_once(__ROOT__.'\admin/admin/lib/session.php');
  require_once(__ROOT__.'\admin/admin/helper/format.php'); */
@@ -354,8 +354,11 @@ class index
 
     public function show_cart($session_id)
     {
-        $query = "SELECT * FROM tbl_cart WHERE session_idA = '$session_id' ORDER BY cart_id DESC";
-        $result = $this->db->select($query);
+        $query = "SELECT * FROM tbl_cart WHERE session_idA = :session_id ORDER BY cart_id DESC";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':session_id', $session_id, PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
     public function show_cartF($session_id)
@@ -438,7 +441,7 @@ class index
             $query = "SELECT * FROM tbl_cart WHERE session_idA = '$session_idA' ORDER BY cart_id DESC";
             $resultA = $this->db->select($query);
             if ($resultA) {
-                while ($resultB = $resultA->fetch_assoc()) {
+                while ($resultB = $resultA->fetch(PDO::FETCH_ASSOC)) {
                     $cart_id = $resultB['cart_id'];
                     $sanpham_anh = $resultB['sanpham_anh'];
                     $sanpham_id = $resultB['sanpham_id'];
@@ -448,21 +451,20 @@ class index
                     $quantitys = $resultB['quantitys'];
                     $sanpham_size = $resultB['sanpham_size'];
                     $query = "INSERT INTO tbl_carta (sanpham_anh,session_idA,sanpham_id,sanpham_tieude,sanpham_gia,color_anh,quantitys,sanpham_size) VALUES 
-             ('$sanpham_anh','$session_idA','$sanpham_id','$sanpham_tieude','$sanpham_gia','$color_anh','$quantitys','$sanpham_size')";
+                 ('$sanpham_anh','$session_idA','$sanpham_id','$sanpham_tieude','$sanpham_gia','$color_anh','$quantitys','$sanpham_size')";
                     $resultC = $this->db->insert($query);
                     if ($resultC) {
-                        $query = "DELETE  FROM tbl_cart WHERE cart_id = '$cart_id'";
+                        $query = "DELETE FROM tbl_cart WHERE cart_id = '$cart_id'";
                         $resultD = $this->db->delete($query);
                         $queryUpdateQuantity = "UPDATE tbl_sanpham SET so_luong = so_luong - $quantitys WHERE sanpham_id = '$sanpham_id'";
                         $this->db->update($queryUpdateQuantity);
                         Session::set('SL', null);
-                        //    return $resultB;  
                     }
                 }
             }
 
             $query = "INSERT INTO tbl_payment (session_idA,giaohang,thanhtoan,order_date) VALUES 
-            ('$session_idA','$deliver_method','$method_payment','$today')";
+        ('$session_idA','$deliver_method','$method_payment','$today')";
             $result = $this->db->insert($query);
             header('Location:success.php');
             return $result;
@@ -470,7 +472,7 @@ class index
             $query = "SELECT * FROM tbl_cart WHERE session_idA = '$session_idA' ORDER BY cart_id DESC";
             $resultA = $this->db->select($query);
             if ($resultA) {
-                while ($resultB = $resultA->fetch_assoc()) {
+                while ($resultB = $resultA->fetch(PDO::FETCH_ASSOC)) {
                     $cart_id = $resultB['cart_id'];
                     $sanpham_anh = $resultB['sanpham_anh'];
                     $sanpham_id = $resultB['sanpham_id'];
@@ -480,22 +482,21 @@ class index
                     $quantitys = $resultB['quantitys'];
                     $sanpham_size = $resultB['sanpham_size'];
                     $query = "INSERT INTO tbl_carta (sanpham_anh,session_idA,sanpham_id,sanpham_tieude,sanpham_gia,color_anh,quantitys,sanpham_size) VALUES 
-             ('$sanpham_anh','$session_idA','$sanpham_id','$sanpham_tieude','$sanpham_gia','$color_anh','$quantitys','$sanpham_size')";
+                 ('$sanpham_anh','$session_idA','$sanpham_id','$sanpham_tieude','$sanpham_gia','$color_anh','$quantitys','$sanpham_size')";
                     $resultC = $this->db->insert($query);
                     if ($resultC) {
-                        $query = "DELETE  FROM tbl_cart WHERE cart_id = '$cart_id'";
+                        $query = "DELETE FROM tbl_cart WHERE cart_id = '$cart_id'";
                         $resultD = $this->db->delete($query);
                         $queryUpdateQuantity = "UPDATE tbl_sanpham SET so_luong = so_luong - $quantitys WHERE sanpham_id = '$sanpham_id'";
                         $this->db->update($queryUpdateQuantity);
-
                         Session::set('SL', null);
-                        //    return $resultB;  
                     }
                 }
             }
             header('Location:success.php');
         }
     }
+
     public function show_carta($session_id)
     {
         $query = "SELECT * FROM tbl_carta WHERE session_idA = '$session_id' ORDER BY carta_id DESC";

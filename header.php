@@ -101,15 +101,15 @@ if (isset($_GET['search'])) {
                 </div>
                 <div class="top-menu-icons">
                     <ul>
-                        <li>
+                        <!-- <li>
                             <form method="GET" action="./?sanpham">
                                 <input type="text" name="search" placeholder="Tìm kiếm...">
                                 <i class="fas fa-search"></i>
                             </form>
-                        </li>
-                        <li>
+                        </li> -->
+                        <!-- <li>
                             <a href="./admin/admin"><i class="fas fa-user-secret"></i></a>
-                        </li>
+                        </li> -->
                         <li>
                             <a href="cart.php"><i class="fas fa-shopping-cart"></i><span><?php if (Session::get('SL')) {
                                 echo Session::get('SL');
@@ -126,16 +126,16 @@ if (isset($_GET['search'])) {
                                 if ($show_cartF instanceof PDOStatement) {
                                     while ($result = $show_cartF->fetch(PDO::FETCH_ASSOC)) {
                                         ?>
-                                        <div class="cart-content-mini-item">
-                                            <img style="width:50px" src="<?php echo $result['sanpham_anh'] ?>" alt="">
-                                            <div class="cart-content-item-text">
-                                                <h1><?php echo $result['sanpham_tieude'] ?></h1>
-                                                <p>Màu: </p>
-                                                <p>Size: <?php echo $result['sanpham_size'] ?></p>
-                                                <p>SL: <?php echo $result['quantitys'] ?></p>
-                                            </div>
-                                        </div>
-                                        <?php
+                                <div class="cart-content-mini-item">
+                                    <img style="width:50px" src="./admin/<?php echo $result['sanpham_anh'] ?>" alt="">
+                                    <div class="cart-content-item-text">
+                                        <h1><?php echo $result['sanpham_tieude'] ?></h1>
+                                        <p>Màu: </p>
+                                        <p>Size: <?php echo $result['sanpham_size'] ?></p>
+                                        <p>SL: <?php echo $result['quantitys'] ?></p>
+                                    </div>
+                                </div>
+                                <?php
                                     }
                                 }
                                 ?>
@@ -143,6 +143,22 @@ if (isset($_GET['search'])) {
                                     <p><a href="cart.php">...Xem chi tiết</a></p>
                                 </div>
                             </div>
+                        </li>
+                        <li>
+                            <?php
+                            if (isset($_SESSION['user_login']) && $_SESSION['user_login'] == true) {
+                                if (isset($_SESSION['user_name']) && !empty($_SESSION['user_name'])) {
+                                    echo '<a href="#" class="text-decoration-none me-2 d-flex gap-2 align-items-center"><i class="fas fa-user"></i> ' . htmlspecialchars($_SESSION['user_name']) . '</a>';
+                                } else {
+                                    echo '<a href="#" class="text-decoration-none me-2 d-flex gap-2 align-items-center"><i class="fas fa-user"></i></a>';
+                                }
+                                echo '<a href="logout.php" class="text-decoration-none me-2">Đăng xuất</a>';
+                            } else {
+                                echo '<a href="login.php" class="text-decoration-none me-2">Đăng nhập</a>';
+                                echo '<a href="register.php" class="text-decoration-none">Đăng ký</a>';
+                            }
+                            ?>
+
                         </li>
                     </ul>
                 </div>

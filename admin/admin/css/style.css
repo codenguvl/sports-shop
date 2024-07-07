@@ -508,3 +508,25 @@ nav .profile .profile-link a:hover {
   background: var(--grey);
 }
 /* NAVBAR */
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  flex: 1 1 calc(33.333% - 40px);
+  margin-bottom: 20px;
+  text-align: center;
+}
+.card h5 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+.card p {
+  margin: 0;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

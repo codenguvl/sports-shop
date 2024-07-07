@@ -128,16 +128,16 @@ if (isset($_GET['search'])) {
                                 if ($show_cartF instanceof PDOStatement) {
                                     while ($result = $show_cartF->fetch(PDO::FETCH_ASSOC)) {
                                         ?>
-                                        <div class="cart-content-mini-item">
-                                            <img style="width:50px" src="<?php echo $result['sanpham_anh'] ?>" alt="">
-                                            <div class="cart-content-item-text">
-                                                <h1><?php echo $result['sanpham_tieude'] ?></h1>
-                                                <p>Màu: </p>
-                                                <p>Size: <?php echo $result['sanpham_size'] ?></p>
-                                                <p>SL: <?php echo $result['quantitys'] ?></p>
-                                            </div>
-                                        </div>
-                                        <?php
+                                <div class="cart-content-mini-item">
+                                    <img style="width:50px" src="./admin/<?php echo $result['sanpham_anh'] ?>" alt="">
+                                    <div class="cart-content-item-text">
+                                        <h1><?php echo $result['sanpham_tieude'] ?></h1>
+                                        <p>Màu: </p>
+                                        <p>Size: <?php echo $result['sanpham_size'] ?></p>
+                                        <p>SL: <?php echo $result['quantitys'] ?></p>
+                                    </div>
+                                </div>
+                                <?php
                                     }
                                 }
                                 ?>

@@ -1036,15 +1036,15 @@ label {
 .payment-content-right-button input {
   height: 30px;
   width: 200px;
-  margin-right: 100px;
+  margin-right: 10px;
   padding-left: 12px;
 }
 .payment-content-right-button button {
-  height: 30px;
-  width: 100px;
   background-color: black;
   color: #fff;
   border: none;
+  padding: 5px 10px;
+  text-wrap: nowrap;
 }
 .payment-content-right-mnv {
   margin-top: 20px;
